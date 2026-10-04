@@ -1,0 +1,40 @@
+.login-kort {
+   max-width: 400px;
+   margin: auto;
+   padding: 20px;
+   border: 1px solid lightblue;
+   border-radius: 10px;
+   background-color: white;
+   box-shadow: 0 4px 8px gray;
+}
+
+.rolle-valg {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.rolle-valg button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid lightblue;
+    background-color: white;
+}
+
+.login-kort input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid lightblue;
+    border-radius: 10px;
+}
+
+.login-kort button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+}
