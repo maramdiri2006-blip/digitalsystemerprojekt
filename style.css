@@ -157,6 +157,49 @@ textarea {
     color: #175678;
 }
 /* Slut på Azras patientdetaljer */
+/* Marams måleoversigt */
+
+.maram-maaleoversigt {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.maram-maaleoversigt .seneste-maaling {
+    background-color: white;
+    border: 1px solid #d5e2ea;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.maram-maaleoversigt .maalinger {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.maram-maaleoversigt .maaling {
+    flex: 1;
+    background-color: #eef4f8;
+    border: 1px solid #d5e2ea;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+}
+
+.maram-maaleoversigt .maaling strong {
+    font-size: 36px;
+    color: #175678;
+}
+
+.maram-maaleoversigt .maaling p {
+    margin: 4px 0;
+}
+
+.maram-maaleoversigt a {
+    text-decoration: none;
+}
 
 /* Sena – registrering af hjemmemåling */
 
