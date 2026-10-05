@@ -15,8 +15,45 @@
         <h1>Hjemmemåling</h1>
     </header>
 
-    <main>
-        <!-- Her bygger personen siden til registrering af hjemmemåling -->
+   <main class="registrering">
+        <h2>Registrer ny måling</h2>
+<p>Indtast dine målinger nedenfor.</p>
+
+<form id="maalingForm">
+
+    <label for="dato">Dato og tidspunkt</label>
+    <input type="datetime-local" id="dato" required>
+
+ <label for="systolisk">Systolisk blodtryk</label>
+<input type="number" id="systolisk" placeholder="mmHg" required>
+
+<label for="diastolisk">Diastolisk blodtryk</label>
+<input type="number" id="diastolisk" placeholder="mmHg" required>
+
+
+<label for="puls">Puls</label>
+<input type="number" id="puls" placeholder="slag/min" required>
+
+<label for="symptomer">Symptomer</label>
+<textarea id="symptomer" placeholder="Beskriv eventuelle symptomer"></textarea>
+
+<label for="tilstand">Hvordan har du det?</label>
+<select id="tilstand" required>
+    <option value="">Vælg tilstand</option>
+    <option value="god">God</option>
+    <option value="okay">Okay</option>
+    <option value="daarlig">Dårlig</option>
+</select>
+
+<label for="note">Note</label>
+
+<textarea id="note" placeholder="Skriv en note"></textarea>
+
+
+<button type="submit">Gem måling</button>
+
+</form>
+
     </main>
 
     <script src="script.js"></script>
