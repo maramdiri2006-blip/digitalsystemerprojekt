@@ -95,3 +95,28 @@ if (visSystolisk && gemtMaaling) {
     visTilstand.textContent = maaling.tilstand;
     visNote.textContent = maaling.note;
 }
+
+
+// Patientdetaljer - sundhedspersonale
+
+const personaleDato = document.getElementById("personaleDato");
+const personaleSystolisk = document.getElementById("personaleSystolisk");
+const personaleDiastolisk = document.getElementById("personaleDiastolisk");
+const personalePuls = document.getElementById("personalePuls");
+const personaleSymptomer = document.getElementById("personaleSymptomer");
+const personaleTilstand = document.getElementById("personaleTilstand");
+const personaleNote = document.getElementById("personaleNote");
+
+const personaleMaaling = localStorage.getItem("senesteMaaling");
+
+if (personaleDato && personaleMaaling) {
+    const maaling = JSON.parse(personaleMaaling);
+
+    personaleDato.textContent = new Date(maaling.dato).toLocaleString("da-DK");
+    personaleSystolisk.textContent = maaling.systolisk;
+    personaleDiastolisk.textContent = maaling.diastolisk;
+    personalePuls.textContent = maaling.puls;
+    personaleSymptomer.textContent = maaling.symptomer;
+    personaleTilstand.textContent = maaling.tilstand;
+    personaleNote.textContent = maaling.note;
+}

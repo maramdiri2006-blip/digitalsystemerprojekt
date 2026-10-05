@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="da">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hjemmemåling</title>
 
@@ -14,10 +16,57 @@
         <h1>Hjemmemåling</h1>
     </header>
 
-    <main>
-    <!-- Her bygger personen sundhedspersonalets patientoversigt -->
-</main>
+    <main class="patientoversigt">
+
+        <button class="tilbage-knap" onclick="window.location.href='index.html'">Tilbage</button>
+
+        <h2>Patientoversigt</h2>
+
+        <label for="patientSearch">Søg efter patient:</label>
+        <input type="text" id="patientSearch" placeholder="Navn eller CPR-nummer">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Navn</th>
+                    <th>CPR-nummer</th>
+                    <th>Seneste måling</th>
+                    <th>Status</th>
+                    <th>Handlinger</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Erik</td>
+                    <td>P001</td>
+                    <td>November</td>
+                    <td class="status normal">Normal</td>
+                    <td><button onclick="window.location.href='5-patientdetaljer.html'">Se patient</button></td>
+                
+                </tr>
+
+                <tr>
+                    <td>Person 2</td>
+                    <td>xxxxx</td>
+                    <td>Seneste måling</td>
+                    <td class="status obs">Obs</td>
+                    <td><button>Se patient</button></td>
+                </tr>
+
+                <tr>
+                    <td>Person 3</td>
+                    <td>xxxxx</td>
+                    <td>Seneste måling</td>
+                    <td class="status hoj-vaerdi">Høj værdi</td>
+                    <td><button>Se patient</button></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </main>
 
     <script src="script.js"></script>
+
 </body>
 </html>
