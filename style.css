@@ -22,6 +22,12 @@
     border-radius: 10px;
     border: 1px solid lightblue;
     background-color: white;
+  
+}
+
+.rolle-valg button.valgt {
+    background-color: #3498db;
+    color: white;
 }
 
 .login-kort input {
@@ -40,7 +46,18 @@
     color: white;
     border: none;
 }
+
+
 /* Benin Login page styles */
+
+
+
+
+
+
+
+
+
 /* Fælles farver og skrifttype */
 body {
     margin: 0;
