@@ -41,3 +41,102 @@
     border: none;
 }
 /* Benin Login page styles */
+/* Fælles farver og skrifttype */
+body {
+    margin: 0;
+    font-family: "Times New Roman", serif;
+    background-color: #eef4f8;
+    color: #243746;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #175678;
+    color: white;
+    padding: 20px 32px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+a {
+    color: #175678;
+    font-weight: bold;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+/* Azra – patientdetaljer */
+.patientdetaljer main {
+    max-width: 960px;
+    margin: 32px auto;
+    padding: 0 24px 40px;
+}
+
+.patientdetaljer h2 {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.patientdetaljer section {
+    background-color: white;
+    border: 1px solid #d5e2ea;
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 24px;
+}
+
+.patientdetaljer h3 {
+    color: #175678;
+    margin-top: 0;
+    border-bottom: 1px solid #d5e2ea;
+    padding-bottom: 12px;
+}
+
+.patientdetaljer section:first-of-type {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 40px;
+}
+
+.patientdetaljer section:first-of-type h3 {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.patientdetaljer section:first-of-type p {
+    margin: 0;
+}
+
+.patientdetaljer .maalinger {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 24px 0;
+}
+
+.patientdetaljer .maalefelt {
+    flex: 1 1 180px;
+    background-color: #eef4f8;
+    border: 1px solid #d5e2ea;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+}
+
+.patientdetaljer .maalefelt p {
+    margin: 4px 0;
+}
+
+.patientdetaljer .maalefelt strong {
+    font-size: 36px;
+    color: #175678;
+}
+/* Slut på Azras patientdetaljer */
