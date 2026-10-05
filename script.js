@@ -8,32 +8,43 @@ const loginForm = document.getElementById("loginForm");
 
 if (patientKnap && personaleKnap && loginForm) {
 
-patientKnap.addEventListener("click", function() {
-    valgtRolle = "patient";
+    patientKnap.addEventListener("click", function() {
+        valgtRolle = "patient";
 
-    patientKnap.classList.add("valgt");
-    personaleKnap.classList.remove("valgt");
-});
+        patientKnap.classList.add("valgt");
+        personaleKnap.classList.remove("valgt");
+    });
 
-personaleKnap.addEventListener("click", function() {
-    valgtRolle = "personale";
+    personaleKnap.addEventListener("click", function() {
+        valgtRolle = "personale";
 
-    personaleKnap.classList.add("valgt");
-    patientKnap.classList.remove("valgt");
-});
+        personaleKnap.classList.add("valgt");
+        patientKnap.classList.remove("valgt");
+    });
 
-loginForm.addEventListener("submit", function(event) {
-    event.preventDefault();
+    loginForm.addEventListener("submit", function(event) {
+        event.preventDefault();
 
-    if (valgtRolle === "patient") {
-        window.location.href = "2-registrering-af-hjemmemaaling.html";
-    }
+        const brugernavn = document.getElementById("brugernavn").value;
+        const password = document.getElementById("password").value;
 
-    if (valgtRolle === "personale") {
-        window.location.href = "4-sundhedspersonalets-patientoversigt.html";
-    }
-});
+        if (valgtRolle === "") {
+            alert("Vælg Patient eller Sundhedspersonale");
+            return;
+        }
 
+       if (valgtRolle === "patient" && brugernavn === "erik" && password === "1234") {
+            window.location.href = "2-registrering-af-hjemmemaaling.html";
+            return;
+        }
+
+        if (valgtRolle === "personale" && brugernavn === "personale" && password === "1234") {
+            window.location.href = "4-sundhedspersonalets-patientoversigt.html";
+            return;
+        }
+
+        alert("Forkert brugernavn eller adgangskode");
+    });
 }
 // Sena - registrering af hjemmemåling
 
