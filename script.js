@@ -66,7 +66,32 @@ localStorage.setItem("senesteMaaling", JSON.stringify(maaling));
 
 alert("Målingen er gemt");
 
+window.location.href = "3-patientens-maaleoversigt.html";
+
 });
 
 
+}
+
+
+// Maram - patientens måleoversigt
+
+const visSystolisk = document.getElementById("visSystolisk");
+const visDiastolisk = document.getElementById("visDiastolisk");
+const visPuls = document.getElementById("visPuls");
+const visDato = document.getElementById("visDato");
+const visSymptomer = document.getElementById("visSymptomer");
+const visTilstand = document.getElementById("visTilstand");
+const visNote = document.getElementById("visNote");
+const gemtMaaling = localStorage.getItem("senesteMaaling");
+
+if (visSystolisk && gemtMaaling) {
+    const maaling = JSON.parse(gemtMaaling);
+    visSystolisk.textContent = maaling.systolisk;
+    visDiastolisk.textContent = maaling.diastolisk;
+    visPuls.textContent = maaling.puls;
+    visDato.textContent = new Date(maaling.dato).toLocaleString("da-DK");
+    visSymptomer.textContent = maaling.symptomer;
+    visTilstand.textContent = maaling.tilstand;
+    visNote.textContent = maaling.note;
 }
