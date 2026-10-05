@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patientens måleoversigt</title>
+    <title>Hjemmemåling</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -15,10 +15,10 @@
         <h1>Hjemmemåling</h1>
     </header>
 
-    <main class="registrering">
+    <main class="maram-maaleoversigt">
 
         <h2>Mine målinger</h2>
-        <p>Her kan du se din seneste hjemmemåling.</p>
+        <p>Her kan du se dine registrerede hjemmemålinger.</p>
 
         <div class="seneste-maaling">
 
@@ -26,26 +26,26 @@
 
             <p>
                 <strong>Dato og tidspunkt:</strong>
-                <span id="visDato">Ingen måling registreret</span>
+                <span id="visDato">4. oktober 2025 kl. 08.00</span>
             </p>
 
             <div class="maalinger">
 
                 <div class="maaling">
                     <p>Systolisk blodtryk</p>
-                    <strong id="visSystolisk">-</strong>
+                    <strong id="visSystolisk">120</strong>
                     <p>mmHg</p>
                 </div>
 
                 <div class="maaling">
                     <p>Diastolisk blodtryk</p>
-                    <strong id="visDiastolisk">-</strong>
+                    <strong id="visDiastolisk">80</strong>
                     <p>mmHg</p>
                 </div>
 
                 <div class="maaling">
                     <p>Puls</p>
-                    <strong id="visPuls">-</strong>
+                    <strong id="visPuls">72</strong>
                     <p>slag/min</p>
                 </div>
 
@@ -58,7 +58,7 @@
 
             <p>
                 <strong>Hvordan har du det?:</strong>
-                <span id="visTilstand">-</span>
+                <span id="visTilstand">God</span>
             </p>
 
             <p>
@@ -67,11 +67,6 @@
             </p>
 
         </div>
-
-        <button type="button"
-                onclick="window.location.href='2-registrering-af-hjemmemaaling.html'">
-            Registrer ny måling
-        </button>
 
     </main>
 
