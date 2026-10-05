@@ -157,3 +157,47 @@ textarea {
     color: #175678;
 }
 /* Slut på Azras patientdetaljer */
+
+/* Sena – registrering af hjemmemåling */
+
+.registrering {
+    max-width: 700px;
+    margin: 32px auto;
+    padding: 24px;
+}
+.registrering form {
+    background-color: white;
+    border: 1px solid #d5e2ea;
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 24px;
+}
+.registrering label {
+    display: block;
+    font-weight: bold;
+    margin-top: 16px;
+    margin-bottom: 6px;
+}
+.registrering input,
+.registrering textarea,
+.registrering select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d5e2ea;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+.registrering button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 24px;
+    background-color: #175678;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+/* Slut på Senas registrering af hjemmemåling */
