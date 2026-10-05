@@ -73,6 +73,7 @@ maalingForm.addEventListener("submit", function(event) {
 
 };
 
+
 localStorage.setItem("senesteMaaling", JSON.stringify(maaling));
 
 alert("Målingen er gemt");
