@@ -157,3 +157,101 @@ textarea {
     color: #175678;
 }
 /* Slut på Azras patientdetaljer */
+
+/*Patientoversigt*/
+.patientoversigt {
+    max-width: 960px;
+    margin: 32px auto;
+    padding: 0 24px 40px;
+}
+.patientoversigt h2 {
+    font-size: 32px;
+    margin-bottom: 24px;
+}
+.patientoversigt input {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px;
+    margin: 10px 0 24px;
+    border: 1px solid #d5e2ea;
+    border-radius: 10px;
+    background-color: white;
+}
+.patientoversigt table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: white;
+    border: 1px solid #d5e2ea;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.patientoversigt th,
+.patientoversigt td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #d5e2ea;
+}
+.patientoversigt th {
+    color: #175678;
+}
+.patientoversigt tr:last-child td {
+
+}
+.patientoversigt button {
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    background-color: #175678;
+    cursor: pointer;
+}
+.patientoversigt .patient-button {
+    white-space: nowrap;
+    min-width: 90px;
+}
+
+.patientoversigt .patient-button:hover {
+    background-color: #3498db;
+}
+.patientoversigt .status {
+    font-weight: normal;
+    color: #243746;
+}
+.patientoversigt .status::before    {
+     content: "●";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.patientoversigt .normal::before {
+    color: green;
+}
+.patientoversigt .obs::before {
+    color: #d99a00;
+}
+.patientoversigt .hoj-vaerdi::before {
+    color: red;
+}
+
+.tilbage-knap {
+    background-color: #175678;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 11px 22px;
+    font-size: 16px;
+    font-family: inherit;
+    cursor: pointer;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.tilbage-knap:hover {
+    background-color: #3498db;
+}
+/* Slut på Patientoversigt */
