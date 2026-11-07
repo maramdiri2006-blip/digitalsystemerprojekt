@@ -123,6 +123,36 @@ async function visSenesteMaaling() {
     }
 
     const maalinger = await svar.json();
+    const historik = document.getElementById("maalingHistorik");
+const besked = document.getElementById("historikBesked");
+
+if (historik && besked) {
+  historik.replaceChildren();
+
+  const tidligereMaalinger = maalinger.slice(1);
+
+  for (const maaling of tidligereMaalinger) {
+    const række = historik.insertRow();
+
+    const værdier = [
+      new Date(maaling.dato).toLocaleString("da-DK"),
+      maaling.systolisk,
+      maaling.diastolisk,
+      maaling.puls,
+      maaling.symptomer || "Ingen symptomer",
+      maaling.tilstand || "Ikke angivet",
+      maaling.note || "Ingen note"
+    ];
+
+    for (const værdi of værdier) {
+      række.insertCell().textContent = værdi;
+    }
+  }
+
+  besked.textContent = tidligereMaalinger.length === 0
+    ? "Ingen tidligere målinger"
+    : "";
+}
     const maaling = maalinger[0];
 
     if (!maaling) {

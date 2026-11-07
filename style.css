@@ -347,3 +347,26 @@ textarea {
     background-color: #3498db;
 }
 /* Slut på Patientoversigt */
+
+.maram-maaleoversigt table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.maram-maaleoversigt th,
+.maram-maaleoversigt td {
+  padding: 12px 16px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #d2e2ec;
+}
+
+.maram-maaleoversigt th {
+  color: #175678;
+  background-color: #eef4f8;
+}
+
+.maram-maaleoversigt th:first-child,
+.maram-maaleoversigt td:first-child {
+  white-space: nowrap;
+}
