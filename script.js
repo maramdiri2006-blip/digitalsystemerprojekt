@@ -189,18 +189,119 @@ const personaleSymptomer = document.getElementById("personaleSymptomer");
 const personaleTilstand = document.getElementById("personaleTilstand");
 const personaleNote = document.getElementById("personaleNote");
 
-const personaleMaaling = localStorage.getItem("senesteMaaling");
+async function visPatientdetaljer() {
+  const navn = document.getElementById("personaleNavn");
+  const cpr = document.getElementById("personaleCpr");
+  const idFelt = document.getElementById("personalePatientId");
 
-if (personaleDato && personaleMaaling) {
-    const maaling = JSON.parse(personaleMaaling);
+  const felter = [
+    personaleSystolisk,
+    personaleDiastolisk,
+    personalePuls,
+    personaleSymptomer,
+    personaleTilstand,
+    personaleNote
+  ];
 
-    personaleDato.textContent = new Date(maaling.dato).toLocaleString("da-DK");
+  for (const felt of felter) {
+    felt.textContent = "";
+  }
+
+  personaleDato.textContent = "Henter målinger…";
+
+  const parametre = new URLSearchParams(window.location.search);
+  const patientId = Number(parametre.get("patientId"));
+
+  try {
+    if (!Number.isInteger(patientId) || patientId < 1) {
+      throw new Error("Vælg en patient fra patientoversigten");
+    }
+
+    const patientSvar = await fetch(
+      "http://localhost:3000/api/patients"
+    );
+
+    if (!patientSvar.ok) {
+      throw new Error("Patientoplysninger kunne ikke hentes");
+    }
+
+    const patienter = await patientSvar.json();
+    const patient = patienter.find(p => p.id === patientId);
+
+    if (!patient) {
+      throw new Error("Patienten findes ikke");
+    }
+
+    navn.textContent = patient.navn;
+    cpr.textContent = patient.cpr;
+    idFelt.textContent = patient.id;
+
+    const svar = await fetch(
+      `http://localhost:3000/api/patients/${patientId}/maalinger`
+    );
+
+    if (!svar.ok) {
+      throw new Error("Målingerne kunne ikke hentes");
+    }
+
+    const maalinger = await svar.json();
+    const historik = document.getElementById("personaleHistorik");
+const besked = document.getElementById("personaleHistorikBesked");
+
+if (historik && besked) {
+  historik.replaceChildren();
+
+  for (const maaling of maalinger) {
+    const række = historik.insertRow();
+
+    const værdier = [
+      new Date(maaling.dato).toLocaleString("da-DK"),
+      maaling.systolisk,
+      maaling.diastolisk,
+      maaling.puls,
+      maaling.symptomer || "Ingen symptomer",
+      maaling.tilstand || "Ikke angivet",
+      maaling.note || "Ingen note"
+    ];
+
+    for (const værdi of værdier) {
+      række.insertCell().textContent = værdi;
+    }
+  }
+
+  besked.textContent = maalinger.length === 0
+    ? "Ingen målinger registreret for denne patient"
+    : "";
+}
+    const maaling = maalinger[0];
+
+    if (!maaling) {
+      personaleDato.textContent = "Ingen målinger endnu";
+      return;
+    }
+
+    personaleDato.textContent =
+      new Date(maaling.dato).toLocaleString("da-DK");
     personaleSystolisk.textContent = maaling.systolisk;
     personaleDiastolisk.textContent = maaling.diastolisk;
     personalePuls.textContent = maaling.puls;
-    personaleSymptomer.textContent = maaling.symptomer;
-    personaleTilstand.textContent = maaling.tilstand;
-    personaleNote.textContent = maaling.note;
+    personaleSymptomer.textContent =
+      maaling.symptomer || "Ingen symptomer";
+    personaleTilstand.textContent =
+      maaling.tilstand || "Ikke angivet";
+    personaleNote.textContent = maaling.note || "Ingen note";
+  } catch (fejl) {
+    if (navn.textContent === "Henter patient…") {
+      navn.textContent = "Patienten kunne ikke vises";
+    }
+
+    personaleDato.textContent = fejl.message;
+    console.error(fejl);
+  }
+}
+
+if (personaleDato) {
+  visPatientdetaljer();
 }
 
 const patientTabel = document.getElementById("patientTabel");
@@ -221,7 +322,13 @@ async function hentPatienter() {
             række.insertCell().textContent = patient.cpr;
             række.insertCell().textContent = "–";
             række.insertCell().textContent = "–";
-            række.insertCell().textContent = "–";
+           const handling = række.insertCell();
+const link = document.createElement("a");
+
+link.textContent = "Se patient";
+link.href = `5-patientdetaljer.html?patientId=${patient.id}`;
+
+handling.appendChild(link);
         }
     } catch (fejl) {
         const celle = patientTabel.insertRow().insertCell();

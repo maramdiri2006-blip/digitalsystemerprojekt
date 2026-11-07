@@ -25,9 +25,20 @@
 <section>
     
     <h3>Patientoplysninger</h3>
-    <p><strong>Navn:</strong> Erik Jensen</p>
-    <p><strong>Alder:</strong> 62 år</p>
-    <p><strong>Patient-ID:</strong> P001</p>
+    <p>
+  <strong>Navn:</strong>
+  <span id="personaleNavn">Henter patient…</span>
+</p>
+
+<p>
+  <strong>Test-ID:</strong>
+  <span id="personaleCpr"></span>
+</p>
+
+<p>
+  <strong>Patient-ID:</strong>
+  <span id="personalePatientId"></span>
+</p>
 </section>  <section>
     <h3>Seneste måling</h3>
     <p><strong>Dato og tidspunkt:</strong> <span id="personaleDato">4. oktober 2026 kl. 08.00</span></p>
@@ -54,45 +65,26 @@
     <p><strong>Egen tilstand:</strong> <span id="personaleTilstand">God</span></p>
     <p><strong>Note:</strong> <span id="personaleNote">Målingen blev foretaget efter hvile.</span></p>
 </section> <section>
-    <h3>Blodtrykkets udvikling</h3>
-    <p>Fiktive målinger fra 1.–4. oktober 2026.</p>
-    <p>· Blå linje: Systolisk </p>
-<p>· Stiplet linje: Diastolisk</p>
-    <svg viewBox="0 0 600 260" role="img"
-         aria-label="Blodtryk: 128/84, 124/82, 126/83 og 120/80 mmHg"
-         style="width: 100%; max-width: 700px; display: block; margin: auto;">
+    <h3>Målehistorik</h3>
 
-        <!-- Vandrette hjælpelinjer -->
-        <g stroke="#d5e2ea">
-            <line x1="60" y1="40" x2="550" y2="40"/>
-            <line x1="60" y1="100" x2="550" y2="100"/>
-            <line x1="60" y1="160" x2="550" y2="160"/>
-            <line x1="60" y1="220" x2="550" y2="220"/>
-        </g>
+<div style="overflow-x: auto;">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Dato og tidspunkt</th>
+        <th scope="col">Systolisk (mmHg)</th>
+        <th scope="col">Diastolisk (mmHg)</th>
+        <th scope="col">Puls (slag/min)</th>
+        <th scope="col">Symptomer</th>
+        <th scope="col">Tilstand</th>
+        <th scope="col">Note</th>
+      </tr>
+    </thead>
+    <tbody id="personaleHistorik"></tbody>
+  </table>
+</div>
 
-        <!-- Tal og datoer på akserne -->
-        <g fill="#243746" font-size="16">
-            <text x="10" y="20">mmHg</text>
-            <text x="20" y="45">140</text>
-            <text x="20" y="105">120</text>
-            <text x="20" y="165">100</text>
-            <text x="28" y="225">80</text>
-
-            <text x="60" y="250">1. okt.</text>
-            <text x="210" y="250">2. okt.</text>
-            <text x="360" y="250">3. okt.</text>
-            <text x="510" y="250">4. okt.</text>
-        </g>
-
-        <!-- Systolisk: 128, 124, 126, 120 -->
-        <polyline points="80,76 230,88 380,82 530,100"
-                  fill="none" stroke="#175678" stroke-width="4"/>
-
-        <!-- Diastolisk: 84, 82, 83, 80 -->
-        <polyline points="80,208 230,214 380,211 530,220"
-                  fill="none" stroke="#526777" stroke-width="4"
-                  stroke-dasharray="8 6"/>
-    </svg>
+<p id="personaleHistorikBesked">Henter målehistorik…</p>
 </section> </main>
 
     <script src="script.js"></script>

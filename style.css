@@ -370,3 +370,26 @@ textarea {
 .maram-maaleoversigt td:first-child {
   white-space: nowrap;
 }
+
+.patientdetaljer table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.patientdetaljer th,
+.patientdetaljer td {
+  padding: 12px 16px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #d2e2ec;
+}
+
+.patientdetaljer th {
+  color: #175678;
+  background-color: #eef4f8;
+}
+
+.patientdetaljer th:first-child,
+.patientdetaljer td:first-child {
+  white-space: nowrap;
+}
