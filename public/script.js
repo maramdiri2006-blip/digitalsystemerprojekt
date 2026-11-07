@@ -372,41 +372,132 @@ if (document.getElementById("personaleDato")) {
 
 // Sundhedspersonalets patientoversigt
 
+// Sundhedspersonalets patientoversigt
+
 const patientTabel = document.getElementById("patientTabel");
+const patientSearch = document.getElementById("patientSearch");
+const patientRaekker = [];
+
+function filtrerPatienter() {
+  const soegning = patientSearch
+    ? patientSearch.value.trim().toLowerCase()
+    : "";
+
+  let antalSynlige = 0;
+
+  for (const patient of patientRaekker) {
+    const matcher = patient.soegetekst.includes(soegning);
+    patient.raekke.hidden = !matcher;
+
+    if (matcher) {
+      antalSynlige++;
+    }
+  }
+
+  const tomRaekke = document.getElementById("ingenPatienter");
+
+  if (tomRaekke) {
+    tomRaekke.hidden = antalSynlige > 0;
+  }
+}
 
 async function hentPatienter() {
   patientTabel.replaceChildren();
+  patientRaekker.length = 0;
 
   try {
     const patienter = await hentJson("/api/patients");
+    const opgaver = [];
 
     for (const patient of patienter) {
       const raekke = patientTabel.insertRow();
 
       raekke.insertCell().textContent = patient.navn;
       raekke.insertCell().textContent = patient.cpr;
-      raekke.insertCell().textContent = "–";
-      raekke.insertCell().textContent = "–";
 
+      const senesteCelle = raekke.insertCell();
+      const statusCelle = raekke.insertCell();
       const handling = raekke.insertCell();
-      const link = document.createElement("a");
 
+      senesteCelle.textContent = "Henter…";
+      statusCelle.textContent = "Henter…";
+
+      const link = document.createElement("a");
       link.textContent = "Se patient";
       link.href =
         `5-patientdetaljer.html?patientId=${patient.id}`;
 
       handling.appendChild(link);
-    }
-  } catch (fejl) {
-    const celle = patientTabel.insertRow().insertCell();
 
+      patientRaekker.push({
+        raekke,
+        soegetekst:
+          `${patient.navn} ${patient.cpr}`.toLowerCase()
+      });
+
+      opgaver.push(
+        visPatientensSeneste(
+          patient.id,
+          senesteCelle,
+          statusCelle
+        )
+      );
+    }
+
+    const tomRaekke = patientTabel.insertRow();
+    tomRaekke.id = "ingenPatienter";
+
+    const tomCelle = tomRaekke.insertCell();
+    tomCelle.colSpan = 5;
+    tomCelle.textContent = "Ingen patienter matcher søgningen.";
+
+    filtrerPatienter();
+
+    await Promise.all(opgaver);
+  } catch (fejl) {
+    patientTabel.replaceChildren();
+    patientRaekker.length = 0;
+
+    const celle = patientTabel.insertRow().insertCell();
     celle.colSpan = 5;
-    celle.textContent = "Patientlisten kunne ikke hentes.";
+    celle.textContent =
+      "Patientlisten kunne ikke hentes. Genindlæs siden.";
 
     console.error(fejl);
   }
 }
 
+async function visPatientensSeneste(
+  patientId,
+  senesteCelle,
+  statusCelle
+) {
+  try {
+    const maalinger = await hentJson(
+      `/api/patients/${patientId}/maalinger`
+    );
+
+    const seneste = maalinger[0];
+
+    if (!seneste) {
+      senesteCelle.textContent = "Ingen målinger";
+      statusCelle.textContent = "Ingen måling registreret";
+      return;
+    }
+
+    senesteCelle.textContent = formaterDato(seneste.dato);
+    statusCelle.textContent = "Måling registreret";
+  } catch (fejl) {
+    senesteCelle.textContent = "Kunne ikke hentes";
+    statusCelle.textContent = "Hentning fejlede";
+    console.error(fejl);
+  }
+}
+
 if (patientTabel) {
+  if (patientSearch) {
+    patientSearch.addEventListener("input", filtrerPatienter);
+  }
+
   hentPatienter();
 }
