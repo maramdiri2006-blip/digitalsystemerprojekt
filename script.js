@@ -52,7 +52,7 @@ const maalingForm = document.getElementById("maalingForm");
 
 if (maalingForm) {
 
-maalingForm.addEventListener("submit", function(event) {
+maalingForm.addEventListener("submit", async function(event) {
     event.preventDefault();
     const dato = document.getElementById("dato").value;
     const systolisk = document.getElementById("systolisk").value;
@@ -63,22 +63,39 @@ maalingForm.addEventListener("submit", function(event) {
     const note = document.getElementById("note").value;
 
     const maaling = {
-    dato: dato,
-    systolisk: systolisk,
-    diastolisk: diastolisk,
-    puls: puls,
-    symptomer: symptomer,
-    tilstand: tilstand,
-    note: note
-
+  patient_id: 1,
+  dato: dato,
+  systolisk: Number(systolisk),
+  diastolisk: Number(diastolisk),
+  puls: Number(puls),
+  symptomer: symptomer,
+  tilstand: tilstand,
+  note: note
 };
 
 
-localStorage.setItem("senesteMaaling", JSON.stringify(maaling));
+try {
+  const svar = await fetch("http://localhost:3000/api/maalinger", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(maaling)
+  });
 
-alert("Målingen er gemt");
+  const resultat = await svar.json();
 
-window.location.href = "3-patientens-maaleoversigt.html";
+  if (!svar.ok) {
+    throw new Error(resultat.error || "Målingen kunne ikke gemmes");
+  }
+
+  localStorage.setItem("senesteMaaling", JSON.stringify(maaling));
+
+  alert("Målingen er gemt i databasen");
+  window.location.href = "3-patientens-maaleoversigt.html";
+} catch (fejl) {
+  alert(fejl.message);
+}
 
 });
 
@@ -95,17 +112,40 @@ const visDato = document.getElementById("visDato");
 const visSymptomer = document.getElementById("visSymptomer");
 const visTilstand = document.getElementById("visTilstand");
 const visNote = document.getElementById("visNote");
-const gemtMaaling = localStorage.getItem("senesteMaaling");
+async function visSenesteMaaling() {
+  try {
+    const svar = await fetch(
+      "http://localhost:3000/api/patients/1/maalinger"
+    );
 
-if (visSystolisk && gemtMaaling) {
-    const maaling = JSON.parse(gemtMaaling);
+    if (!svar.ok) {
+      throw new Error("Målingerne kunne ikke hentes");
+    }
+
+    const maalinger = await svar.json();
+    const maaling = maalinger[0];
+
+    if (!maaling) {
+      visDato.textContent = "Ingen målinger endnu";
+      return;
+    }
+
     visSystolisk.textContent = maaling.systolisk;
     visDiastolisk.textContent = maaling.diastolisk;
     visPuls.textContent = maaling.puls;
-    visDato.textContent = new Date(maaling.dato).toLocaleString("da-DK");
-    visSymptomer.textContent = maaling.symptomer;
-    visTilstand.textContent = maaling.tilstand;
-    visNote.textContent = maaling.note;
+    visDato.textContent =
+      new Date(maaling.dato).toLocaleString("da-DK");
+    visSymptomer.textContent = maaling.symptomer || "Ingen symptomer";
+    visTilstand.textContent = maaling.tilstand || "–";
+    visNote.textContent = maaling.note || "Ingen note";
+  } catch (fejl) {
+    visDato.textContent = "Målingen kunne ikke hentes";
+    console.error(fejl);
+  }
+}
+
+if (visSystolisk) {
+  visSenesteMaaling();
 }
 
 
