@@ -75,7 +75,7 @@ maalingForm.addEventListener("submit", async function(event) {
 
 
 try {
-  const svar = await fetch("http://localhost:3000/api/maalinger", {
+  const svar = await fetch("/api/maalinger", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -115,7 +115,7 @@ const visNote = document.getElementById("visNote");
 async function visSenesteMaaling() {
   try {
     const svar = await fetch(
-      "http://localhost:3000/api/patients/1/maalinger"
+      "/api/patients/1/maalinger"
     );
 
     if (!svar.ok) {
@@ -218,7 +218,7 @@ async function visPatientdetaljer() {
     }
 
     const patientSvar = await fetch(
-      "http://localhost:3000/api/patients"
+      "/api/patients"
     );
 
     if (!patientSvar.ok) {
@@ -237,7 +237,7 @@ async function visPatientdetaljer() {
     idFelt.textContent = patient.id;
 
     const svar = await fetch(
-      `http://localhost:3000/api/patients/${patientId}/maalinger`
+      `/api/patients/${patientId}/maalinger`
     );
 
     if (!svar.ok) {
@@ -308,7 +308,7 @@ const patientTabel = document.getElementById("patientTabel");
 
 async function hentPatienter() {
     try {
-        const svar = await fetch("http://localhost:3000/api/patients");
+        const svar = await fetch("/api/patients");
 
         if (!svar.ok) {
             throw new Error("Patientlisten kunne ikke hentes.");

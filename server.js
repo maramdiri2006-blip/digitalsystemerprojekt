@@ -4,6 +4,7 @@ const { gemMaaling, hentMaalinger } = require("./repositories/maalinger");
 const express = require("express");
 
 const app = express();
+app.use(express.static(require("path").join(__dirname, "public")));
 
 const patients = [
   { cpr: "TEST001", navn: "Testpatient 1" },
@@ -106,6 +107,12 @@ app.use((req, res) => {
 
 
 
-app.listen(3000, () => {
-  console.log("Serveren kører på http://localhost:3000");
-});
+if (require.main === module) {
+  const port = process.env.PORT || 3000;
+
+  app.listen(port, () => {
+    console.log(`Serveren kører på http://localhost:${port}`);
+  });
+}
+
+module.exports = app;
