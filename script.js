@@ -132,3 +132,35 @@ if (personaleDato && personaleMaaling) {
     personaleTilstand.textContent = maaling.tilstand;
     personaleNote.textContent = maaling.note;
 }
+
+const patientTabel = document.getElementById("patientTabel");
+
+async function hentPatienter() {
+    try {
+        const svar = await fetch("http://localhost:3000/api/patients");
+
+        if (!svar.ok) {
+            throw new Error("Patientlisten kunne ikke hentes.");
+        }
+
+        const patienter = await svar.json();
+
+        for (const patient of patienter) {
+            const række = patientTabel.insertRow();
+            række.insertCell().textContent = patient.navn;
+            række.insertCell().textContent = patient.cpr;
+            række.insertCell().textContent = "–";
+            række.insertCell().textContent = "–";
+            række.insertCell().textContent = "–";
+        }
+    } catch (fejl) {
+        const celle = patientTabel.insertRow().insertCell();
+        celle.colSpan = 5;
+        celle.textContent = "Patientlisten kunne ikke hentes.";
+        console.error(fejl);
+    }
+}
+
+if (patientTabel) {
+    hentPatienter();
+}
