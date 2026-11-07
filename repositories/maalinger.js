@@ -24,8 +24,9 @@ async function gemMaaling(maaling) {
 
 async function hentMaalinger(patientId) {
   const resultat = await db.query(
-    `SELECT id, patient_id, dato, systolisk, diastolisk, puls,
-            symptomer, tilstand, note
+        `SELECT id, patient_id,
+            to_char(dato, 'YYYY-MM-DD"T"HH24:MI:SS') AS dato,
+            systolisk, diastolisk, puls, symptomer, tilstand, note
      FROM maalinger
      WHERE patient_id = $1
      ORDER BY dato DESC, id DESC`,
