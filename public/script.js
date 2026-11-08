@@ -275,7 +275,8 @@ async function visSenesteMaaling() {
       maalinger.slice(1),
       "Ingen tidligere målinger"
     );
-
+    tegnMaaleGrafer("vis", maalinger);
+    
     const maaling = maalinger[0];
 
     if (!maaling) {
@@ -339,6 +340,7 @@ async function visPatientdetaljer() {
       maalinger,
       "Ingen målinger registreret for denne patient"
     );
+        tegnMaaleGrafer("personale", maalinger);
 
     const maaling = maalinger[0];
 
@@ -500,4 +502,253 @@ if (patientTabel) {
   }
 
   hentPatienter();
+}
+// Grafer baseret på patientens gemte målinger
+
+function tegnMaaleGrafer(prefix, maalinger) {
+  tegnGraf(
+    prefix + "BlodtrykGraf",
+    maalinger,
+    [
+      { felt: "systolisk", navn: "Systolisk", stiplet: false },
+      { felt: "diastolisk", navn: "Diastolisk", stiplet: true }
+    ],
+    "mmHg"
+  );
+
+  tegnGraf(
+    prefix + "PulsGraf",
+    maalinger,
+    [
+      { felt: "puls", navn: "Puls", stiplet: false }
+    ],
+    "slag/min"
+  );
+}
+
+function tegnGraf(holderId, maalinger, serier, enhed) {
+  const holder = document.getElementById(holderId);
+
+  if (!holder) {
+    return;
+  }
+
+  holder.replaceChildren();
+
+  if (maalinger.length === 0) {
+    holder.textContent = "Ingen målinger at vise.";
+    return;
+  }
+
+  const data = [...maalinger].sort(
+    (a, b) => new Date(a.dato) - new Date(b.dato)
+  );
+
+  const tider = data.map(
+    (maaling) => new Date(maaling.dato).getTime()
+  );
+
+  const vaerdier = data.flatMap(
+    (maaling) => serier.map(
+      (serie) => Number(maaling[serie.felt])
+    )
+  );
+
+  if (
+    !tider.every(Number.isFinite) ||
+    !vaerdier.every(Number.isFinite)
+  ) {
+    holder.textContent = "Grafen kunne ikke tegnes.";
+    return;
+  }
+
+  const periode = document.createElement("p");
+  periode.textContent =
+    `Periode: ${formaterDato(data[0].dato)} – ` +
+    formaterDato(data[data.length - 1].dato);
+
+  holder.appendChild(periode);
+
+  const svgNS = "http://www.w3.org/2000/svg";
+
+  function element(tag, attributter, tekst) {
+    const node = document.createElementNS(svgNS, tag);
+
+    for (const [navn, vaerdi] of Object.entries(attributter)) {
+      node.setAttribute(navn, String(vaerdi));
+    }
+
+    if (tekst !== undefined) {
+      node.textContent = tekst;
+    }
+
+    return node;
+  }
+
+  const svg = element("svg", {
+    viewBox: "0 0 760 330",
+    role: "img",
+    "aria-label":
+      `${serier.map((serie) => serie.navn).join(" og ")} ` +
+      `i ${enhed}. ${data.length} målinger. ` +
+      "De præcise værdier findes i måletabellen."
+  });
+
+  svg.style.width = "100%";
+  svg.style.display = "block";
+
+  const venstre = 70;
+  const hoejre = 720;
+  const top = 35;
+  const bund = 245;
+
+  const laveste = Math.min(...vaerdier);
+  const hoejeste = Math.max(...vaerdier);
+  const margen = Math.max(5, (hoejeste - laveste) * 0.15);
+
+  const minimum = Math.max(
+    0,
+    Math.floor((laveste - margen) / 5) * 5
+  );
+
+  const maksimum = Math.ceil(
+    (hoejeste + margen) / 5
+  ) * 5;
+
+  const start = tider[0];
+  const slut = tider[tider.length - 1];
+
+  function x(tid) {
+    if (start === slut) {
+      return (venstre + hoejre) / 2;
+    }
+
+    return venstre +
+      ((tid - start) / (slut - start)) * (hoejre - venstre);
+  }
+
+  function y(vaerdi) {
+    return bund -
+      ((vaerdi - minimum) / (maksimum - minimum)) *
+      (bund - top);
+  }
+
+  svg.appendChild(
+    element("text", {
+      x: venstre,
+      y: 20,
+      fill: "#243746",
+      "font-size": 15
+    }, enhed)
+  );
+
+  for (let trin = 0; trin <= 4; trin++) {
+    const vaerdi = minimum + (maksimum - minimum) * trin / 4;
+    const position = y(vaerdi);
+
+    svg.appendChild(
+      element("line", {
+        x1: venstre,
+        x2: hoejre,
+        y1: position,
+        y2: position,
+        stroke: "#d2e2ec"
+      })
+    );
+
+    svg.appendChild(
+      element("text", {
+        x: venstre - 12,
+        y: position + 5,
+        "text-anchor": "end",
+        fill: "#243746",
+        "font-size": 14
+      }, Number(vaerdi.toFixed(1)))
+    );
+  }
+
+  const akseTider = start === slut
+    ? [start]
+    : [start, start + (slut - start) / 2, slut];
+
+  for (const tid of akseTider) {
+    const dato = new Date(tid);
+
+    svg.appendChild(
+      element("text", {
+        x: x(tid),
+        y: bund + 28,
+        "text-anchor": "middle",
+        fill: "#243746",
+        "font-size": 13
+      }, dato.toLocaleDateString("da-DK"))
+    );
+
+    svg.appendChild(
+      element("text", {
+        x: x(tid),
+        y: bund + 48,
+        "text-anchor": "middle",
+        fill: "#243746",
+        "font-size": 13
+      }, dato.toLocaleTimeString("da-DK", {
+        hour: "2-digit",
+        minute: "2-digit"
+      }))
+    );
+  }
+
+  svg.appendChild(
+    element("text", {
+      x: (venstre + hoejre) / 2,
+      y: 325,
+      "text-anchor": "middle",
+      fill: "#243746",
+      "font-size": 14
+    }, "Dato og tidspunkt")
+  );
+
+  for (const serie of serier) {
+    const farve = serie.stiplet ? "#526777" : "#175678";
+
+    const punkter = data.map(
+      (maaling, indeks) =>
+        `${x(tider[indeks])},${y(Number(maaling[serie.felt]))}`
+    ).join(" ");
+
+    const linje = element("polyline", {
+      points: punkter,
+      fill: "none",
+      stroke: farve,
+      "stroke-width": 3
+    });
+
+    if (serie.stiplet) {
+      linje.setAttribute("stroke-dasharray", "8 6");
+    }
+
+    svg.appendChild(linje);
+
+    data.forEach((maaling, indeks) => {
+      const punkt = element("circle", {
+        cx: x(tider[indeks]),
+        cy: y(Number(maaling[serie.felt])),
+        r: 4,
+        fill: serie.stiplet ? "white" : farve,
+        stroke: farve,
+        "stroke-width": 2
+      });
+
+      punkt.appendChild(
+        element("title", {},
+          `${serie.navn}: ${maaling[serie.felt]} ${enhed}, ` +
+          formaterDato(maaling.dato)
+        )
+      );
+
+      svg.appendChild(punkt);
+    });
+  }
+
+  holder.appendChild(svg);
 }
