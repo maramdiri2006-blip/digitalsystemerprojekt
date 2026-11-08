@@ -6,10 +6,6 @@ const express = require("express");
 const app = express();
 app.use(express.static(require("path").join(__dirname, "public")));
 
-const patients = [
-  { cpr: "TEST001", navn: "Testpatient 1" },
-  { cpr: "TEST002", navn: "Testpatient 2" },
-];
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -33,29 +29,6 @@ app.get("/api/patients", async (req, res) => {
     res.status(500).json({ error: "Patientlisten kunne ikke hentes" });
   }
 });
-
-app.get("/api/patients/:cpr", (req, res) => {
-  const patient = patients.find((patient) => patient.cpr === req.params.cpr);
-
-  if (!patient) {
-    return res.status(404).json({ error: "Patienten blev ikke fundet" });
-  }
-
-  res.json(patient);
-});
-app.post("/api/patients", (req, res) => {
-  const { cpr, navn } = req.body ?? {};
-
-  if (!cpr || !navn) {
-    return res.status(400).json({ error: "Test-ID og navn skal udfyldes" });
-  }
-
-  const nyPatient = { cpr, navn };
-  patients.push(nyPatient);
-
-  res.status(201).json(nyPatient);
-});
-
 
 app.post("/api/maalinger", async (req, res) => {
   const maaling = req.body ?? {};
